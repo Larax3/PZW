@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.contrib.auth import logout
 
 # Views for authentication and authorization
 def register(request):
@@ -15,7 +16,7 @@ def register(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('main:homepage')
+            return redirect('PZWapp:homepage')
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
@@ -38,6 +39,10 @@ def delete_user(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
         user.delete()
-        return redirect('main:admin_view')
+        return redirect('PZWapp:admin_view')
     except User.DoesNotExist:
         return HttpResponse('User not found', status=404)
+
+def custom_logout(request):
+    logout(request)
+    return redirect('login')
