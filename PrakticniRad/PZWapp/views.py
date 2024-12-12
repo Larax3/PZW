@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 
 # Views for authentication and authorization
 def register(request):
