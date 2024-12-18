@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalji Vrtnog Bilja</title>
+</head>
+<body>
+    <h1>Detalji Vrtnog Bilja</h1>
+    <table border="1">
+        <tr>
+            <th>Ime</th>
+            <td>{{ object.ime_v }}</td>
+        </tr>
+        <tr>
+            <th>Regija</th>
+            <td>{{ object.regijaBiljke_v }}</td>
+        </tr>
+        <tr>
+            <th>Vrijeme Sazrijevanja</th>
+            <td>{{ object.vrijemeSazrijevanja_v }}</td>
+        </tr>
+        <tr>
+            <th>Slika</th>
+            <td><img src="{{ object.slikaBiljke_v.url }}" alt="{{ object.ime_v }}"></td>
+        </tr>
+    </table>
+    <a href="{% url 'vrtnabiljka_list' %}">Povratak na popis</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Popis Povrtnog Bilja</title>
+</head>
+<body>
+    <h1>Popis Povrtnog Bilja</h1>
+    <form method="get">
+        <input type="text" name="q" placeholder="Pretraži po imenu...">
+        <button type="submit">Pretraži</button>
+    </form>
+    <ul>
+        {% for biljka in biljke %}
+        <li>
+            <a href="{% url 'povrtnabiljka_detail' biljka.id %}">{{ biljka.ime_p }}</a> - 
+            Regija: {{ biljka.regijaBiljke_p }} - Sazrijevanje: {{ biljka.vrijemeSazrijevanja_p }}
+        </li>
+        {% empty %}
+        <li>Nema rezultata za prikaz.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'PZWapp:homepage' %}">Povratak na početnu stranicu</a>
+</body>
+</html>

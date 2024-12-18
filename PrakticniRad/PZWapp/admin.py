@@ -1,3 +1,4 @@
-from django.contrib import admin
+from .models import VrtnaBiljka, PovrtnaBiljka
 
-# Register your models here.
+admin.site.register(VrtnaBiljka)
+admin.site.register(PovrtnaBiljka)

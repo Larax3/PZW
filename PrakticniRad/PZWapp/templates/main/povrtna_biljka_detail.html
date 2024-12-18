@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalji Povrtnog Bilja</title>
+</head>
+<body>
+    <h1>Detalji Povrtnog Bilja</h1>
+    <table border="1">
+        <tr>
+            <th>Ime</th>
+            <td>{{ object.ime_p }}</td>
+        </tr>
+        <tr>
+            <th>Regija</th>
+            <td>{{ object.regijaBiljke_p }}</td>
+        </tr>
+        <tr>
+            <th>Vrijeme Sazrijevanja</th>
+            <td>{{ object.vrijemeSazrijevanja_p }}</td>
+        </tr>
+        <tr>
+            <th>Slika</th>
+            <td><img src="{{ object.slikaBiljke_p.url }}" alt="{{ object.ime_p }}"></td>
+        </tr>
+    </table>
+    <a href="{% url 'povrtnabiljka_list' %}">Povratak na popis</a>
+</body>
+</html>

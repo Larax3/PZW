@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView
+from .models import VrtnaBiljka, PovrtnaBiljka
 
 
 # Views for authentication and authorization
@@ -48,3 +50,33 @@ def delete_user(request, user_id):
 def custom_logout(request):
     logout(request)
     return redirect('login')
+
+class VrtnaBiljkaListView(ListView):
+    model = VrtnaBiljka
+    template_name = 'main/vrtna_biljka_list.html'
+    context_object_name = 'biljke'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return VrtnaBiljka.objects.filter(ime_v__icontains=query)
+        return VrtnaBiljka.objects.all()
+
+class PovrtnaBiljkaListView(ListView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_list.html'
+    context_object_name = 'biljke'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return PovrtnaBiljka.objects.filter(ime_p__icontains=query)
+        return PovrtnaBiljka.objects.all()
+
+class VrtnaBiljkaDetailView(DetailView):
+    model = VrtnaBiljka
+    template_name = 'main/vrtna_biljka_detail.html'
+
+class PovrtnaBiljkaDetailView(DetailView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_detail.html'
