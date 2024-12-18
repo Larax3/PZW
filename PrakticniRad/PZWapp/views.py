@@ -80,3 +80,20 @@ class VrtnaBiljkaDetailView(DetailView):
 class PovrtnaBiljkaDetailView(DetailView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_detail.html'
+
+from django.http import HttpResponse
+from .models import VrtnaBiljka, PovrtnaBiljka
+
+def kreiraj_testne_podatke(request):
+    # Kreiranje testnih podataka
+    VrtnaBiljka.objects.bulk_create([
+        VrtnaBiljka(ime_v='Ruža', regijaBiljke_v='Mediteran', vrijemeSazrijevanja_v='Proljeće'),
+        VrtnaBiljka(ime_v='Lala', regijaBiljke_v='Balkan', vrijemeSazrijevanja_v='Proljeće'),
+    ])
+
+    PovrtnaBiljka.objects.bulk_create([
+        PovrtnaBiljka(ime_p='Mrkva', regijaBiljke_p='Kontinentalna', vrijemeSazrijevanja_p='Ljeto'),
+        PovrtnaBiljka(ime_p='Krumpir', regijaBiljke_p='Planinska', vrijemeSazrijevanja_p='Ljeto'),
+    ])
+
+    return HttpResponse("Testni podaci su uspješno kreirani!")

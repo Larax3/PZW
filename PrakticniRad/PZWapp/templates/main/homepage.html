@@ -6,6 +6,15 @@
 <body>
     <h1>Welcome, {{ user.username }}!</h1>
     <p>You are logged in.</p>
+
+    <!-- Linkovi za povrtne i vrtne biljke -->
+    <h2>Pregledajte Biljke</h2>
+    <ul>
+        <li><a href="{% url 'PZWapp:vrtnabiljka_list' %}">Popis Vrtnog Bilja</a></li>
+        <li><a href="{% url 'PZWapp:povrtnabiljka_list' %}">Popis Povrtnog Bilja</a></li>
+    </ul>
+
+    <!-- Logout forma -->
     <form method="post" action="{% url 'PZWapp:logout' %}">
         {% csrf_token %}
         <button type="submit">Logout</button>

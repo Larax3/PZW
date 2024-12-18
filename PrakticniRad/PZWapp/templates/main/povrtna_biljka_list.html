@@ -12,7 +12,7 @@
     <ul>
         {% for biljka in biljke %}
         <li>
-            <a href="{% url 'povrtnabiljka_detail' biljka.id %}">{{ biljka.ime_p }}</a> - 
+            <a href="{% url 'PZWapp:povrtnabiljka_detail' biljka.id %}">{{ biljka.ime_p }}</a> - 
             Regija: {{ biljka.regijaBiljke_p }} - Sazrijevanje: {{ biljka.vrijemeSazrijevanja_p }}
         </li>
         {% empty %}

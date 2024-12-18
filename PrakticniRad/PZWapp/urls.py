@@ -5,6 +5,7 @@ from .views import (
     VrtnaBiljkaListView, VrtnaBiljkaDetailView, 
     PovrtnaBiljkaListView, PovrtnaBiljkaDetailView
 )
+from .views import kreiraj_testne_podatke
 
 app_name = 'PZWapp'
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('vrtnabiljke/<int:pk>/', VrtnaBiljkaDetailView.as_view(), name='vrtnabiljka_detail'),
     path('povrtnabiljke/', PovrtnaBiljkaListView.as_view(), name='povrtnabiljka_list'),
     path('povrtnabiljke/<int:pk>/', PovrtnaBiljkaDetailView.as_view(), name='povrtnabiljka_detail'),
+    path('kreiraj-testne-podatke/', kreiraj_testne_podatke, name='kreiraj_testne_podatke'),
 ]
