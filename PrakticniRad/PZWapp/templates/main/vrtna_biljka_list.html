@@ -50,6 +50,10 @@
     </style>
 </head>
 <body>
+    <form method="get">
+        <input type="text" name="q" placeholder="Pretraži po imenu...">
+        <button type="submit">Pretraži</button>
+    </form>
     <h1>Popis Biljaka</h1>
     <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="add-btn">Dodaj novu biljku</a>
     <table>
