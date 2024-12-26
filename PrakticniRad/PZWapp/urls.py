@@ -6,6 +6,14 @@ from .views import (
     PovrtnaBiljkaListView, PovrtnaBiljkaDetailView
 )
 from .views import kreiraj_testne_podatke
+from .views import (
+    VrtnaBiljkaCreateView, VrtnaBiljkaUpdateView, VrtnaBiljkaDeleteView
+)
+from .views import (
+    PovrtnaBiljkaCreateView, PovrtnaBiljkaUpdateView, PovrtnaBiljkaDeleteView
+)
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = 'PZWapp'
 urlpatterns = [
@@ -20,4 +28,13 @@ urlpatterns = [
     path('povrtnabiljke/', PovrtnaBiljkaListView.as_view(), name='povrtnabiljka_list'),
     path('povrtnabiljke/<int:pk>/', PovrtnaBiljkaDetailView.as_view(), name='povrtnabiljka_detail'),
     path('kreiraj-testne-podatke/', kreiraj_testne_podatke, name='kreiraj_testne_podatke'),
-]
+    path('vrtnabiljke/dodaj/', VrtnaBiljkaCreateView.as_view(), name='vrtnabiljka_create'),
+    path('vrtnabiljke/<int:pk>/uredi/', VrtnaBiljkaUpdateView.as_view(), name='vrtnabiljka_update'),
+    path('vrtnabiljke/<int:pk>/obrisi/', VrtnaBiljkaDeleteView.as_view(), name='vrtnabiljka_delete'),
+    path('povrtnabiljke/dodaj/', PovrtnaBiljkaCreateView.as_view(), name='povrtnabiljka_create'),
+    path('povrtnabiljke/<int:pk>/uredi/', PovrtnaBiljkaUpdateView.as_view(), name='povrtnabiljka_update'),
+    path('povrtnabiljke/<int:pk>/obrisi/', PovrtnaBiljkaDeleteView.as_view(), name='povrtnabiljka_delete'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

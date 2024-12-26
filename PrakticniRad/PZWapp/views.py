@@ -8,6 +8,10 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from .models import VrtnaBiljka, PovrtnaBiljka
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.views.generic import UpdateView
+from django.views.generic import DeleteView
 
 
 # Views for authentication and authorization
@@ -97,3 +101,37 @@ def kreiraj_testne_podatke(request):
     ])
 
     return HttpResponse("Testni podaci su uspješno kreirani!")
+
+class VrtnaBiljkaCreateView(CreateView):
+    model = VrtnaBiljka
+    template_name = 'main/vrtna_biljka_form.html'
+    fields = ['ime_v', 'slikaBiljke_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
+    success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
+
+class VrtnaBiljkaUpdateView(UpdateView):
+    model = VrtnaBiljka
+    template_name = 'main/vrtna_biljka_form.html'
+    fields = ['ime_v', 'slikaBiljke_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
+    success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
+
+class VrtnaBiljkaDeleteView(DeleteView):
+    model = VrtnaBiljka
+    template_name = 'main/vrtna_biljka_confirm_delete.html'
+    success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
+
+class PovrtnaBiljkaCreateView(CreateView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_form.html'
+    fields = ['ime_p', 'slikaBiljke_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+    success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
+
+class PovrtnaBiljkaUpdateView(UpdateView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_form.html'
+    fields = ['ime_p', 'slikaBiljke_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+    success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
+
+class PovrtnaBiljkaDeleteView(DeleteView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_confirm_delete.html'
+    success_url = reverse_lazy('PZWapp:povrtnabiljka_list')

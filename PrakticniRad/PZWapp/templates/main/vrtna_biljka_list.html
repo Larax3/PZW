@@ -1,24 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Popis Vrtnog Bilja</title>
+    <title>Popis Vrtnih Biljaka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Popis Vrtnog Bilja</h1>
-    <form method="get">
-        <input type="text" name="q" placeholder="Pretraži po imenu...">
-        <button type="submit">Pretraži</button>
-    </form>
-    <ul>
-        {% for biljka in biljke %}
-        <li>
-            <a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}">{{ biljka.ime_v }}</a> - 
-            Regija: {{ biljka.regijaBiljke_v }} - Sazrijevanje: {{ biljka.vrijemeSazrijevanja_v }}
-        </li>
-        {% empty %}
-        <li>Nema rezultata za prikaz.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'PZWapp:homepage' %}">Povratak na početnu stranicu</a>
+    <h1>Popis Biljaka</h1>
+    <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="add-btn">Dodaj novu biljku</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Regija</th>
+                <th>Vrijeme Sazrijevanja</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for biljka in biljke %}
+            <tr>
+                <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}">{{ biljka.ime_v }}</a></td>
+                <td>{{ biljka.regijaBiljke_v }}</td>
+                <td>{{ biljka.vrijemeSazrijevanja_v }}</td>
+                <td>
+                    <a href="{% url 'PZWapp:vrtnabiljka_update' biljka.id %}">Uredi</a> |
+                    <a href="{% url 'PZWapp:vrtnabiljka_delete' biljka.id %}">Obriši</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nema rezultata za prikaz.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
