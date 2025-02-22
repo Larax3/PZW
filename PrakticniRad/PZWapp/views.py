@@ -1,59 +1,70 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView
-from .models import VrtnaBiljka, PovrtnaBiljka
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.views.generic import UpdateView
-from django.views.generic import DeleteView
+from .forms import RegisterForm
+from django.contrib.auth.hashers import check_password
 
 
-# Views for authentication and authorization
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('PZWapp:homepage')
+            korisnik = form.save(commit=False)  
+            korisnik.set_password(form.cleaned_data['lozinka']) 
+            korisnik.save() 
+            return redirect('PZWapp:login')  
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
+    
     return render(request, 'registration/register.html', {'form': form})
-
-@login_required
-def homepage(request):
-    return render(request, 'main/homepage.html')
-
-@login_required
-def admin_view(request):
-    if not request.user.is_superuser:
-        return HttpResponse('Unauthorized', status=401)
-    users = User.objects.all()
-    return render(request, 'main/admin_view.html', {'users': users})
-
-@login_required
-def delete_user(request, user_id):
-    if not request.user.is_superuser:
-        return HttpResponse('Unauthorized', status=401)
-    try:
-        user = User.objects.get(pk=user_id)
-        user.delete()
-        return redirect('PZWapp:admin_view')
-    except User.DoesNotExist:
-        return HttpResponse('User not found', status=404)
-
 def custom_logout(request):
     logout(request)
     return redirect('login')
+
+def admin_view(request):
+    # Dohvati sve korisnike
+    korisnici = Korisnik.objects.all()
+    context = {
+        'korisnici': korisnici
+    }
+    return render(request, 'main/admin_views.html', context)
+
+def delete_user(request, user_id):
+    korisnik = get_object_or_404(Korisnik, id=user_id)
+    korisnik.delete()
+    return redirect('PZWapp:admin_view')
+
+def homepage(request):
+    korisnik_id = request.session.get('korisnik_id')
+    if korisnik_id:
+        korisnik = Korisnik.objects.get(id=korisnik_id)
+        return render(request, 'main/homepage.html', {'korisnik': korisnik})
+    else:
+        return redirect('PZWapp:login')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            korisnik = Korisnik.objects.get(username=username)
+            if check_password(password, korisnik.lozinka):  
+        
+                return redirect('PZWapp:homepage')
+            else:
+                
+                return render(request, 'registration/login.html', {'error': 'Neispravno korisničko ime ili lozinka'})
+        except Korisnik.DoesNotExist:
+           
+            return render(request, 'registration/login.html', {'error': 'Neispravno korisničko ime ili lozinka'})
+    else:
+        return render(request, 'registration/login.html')
 
 class VrtnaBiljkaListView(ListView):
     model = VrtnaBiljka
@@ -84,9 +95,6 @@ class VrtnaBiljkaDetailView(DetailView):
 class PovrtnaBiljkaDetailView(DetailView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_detail.html'
-
-from django.http import HttpResponse
-from .models import VrtnaBiljka, PovrtnaBiljka
 
 def kreiraj_testne_podatke(request):
     # Kreiranje testnih podataka
