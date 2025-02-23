@@ -8,8 +8,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
 from .forms import RegisterForm
-from django.contrib.auth.hashers import check_password
-
+from django.shortcuts import render, redirect
+from .models import Korisnik
 
 def register(request):
     if request.method == 'POST':
@@ -40,13 +40,13 @@ def delete_user(request, user_id):
     korisnik.delete()
     return redirect('PZWapp:admin_view')
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def homepage(request):
-    korisnik_id = request.session.get('korisnik_id')
-    if korisnik_id:
-        korisnik = Korisnik.objects.get(id=korisnik_id)
-        return render(request, 'main/homepage.html', {'korisnik': korisnik})
-    else:
-        return redirect('PZWapp:login')
+    return render(request, 'main/homepage.html', {'korisnik': request.user})
+
+
 
 def login_view(request):
     if request.method == 'POST':
