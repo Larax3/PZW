@@ -7,22 +7,24 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
-from .forms import RegisterForm
+from .forms import UserRegistrationForm
 from django.shortcuts import render, redirect
 from .models import Korisnik
 
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            korisnik = form.save(commit=False)  
-            korisnik.set_password(form.cleaned_data['lozinka']) 
-            korisnik.save() 
-            return redirect('PZWapp:login')  
+            new_user = form.save(commit=False)
+            new_user.set_password(form.cleaned_data['password'])
+            new_user.save()
+            return redirect('PZWapp:login')
     else:
-        form = RegisterForm()
+        form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
     
     return render(request, 'registration/register.html', {'form': form})
+
 def custom_logout(request):
     logout(request)
     return redirect('login')

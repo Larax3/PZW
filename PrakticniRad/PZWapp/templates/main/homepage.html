@@ -1,23 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
+    <meta charset="UTF-8">
     <title>Homepage</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <h1>Welcome, {{ korisnik.username }}!</h1>
-    <p>You are logged in.</p>
+<body class="homepage">
+    <div class="container">
+        <h1 class="welcome">Dobrodošli, {{ korisnik.username }}!</h1>
+        <p class="subtext">Uspješno ste prijavljeni.</p>
 
-    <!-- Linkovi za povrtne i vrtne biljke -->
-    <h2>Pregledajte Biljke</h2>
-    <ul>
-        <li><a href="{% url 'PZWapp:vrtnabiljka_list' %}">Popis Vrtnog Bilja</a></li>
-        <li><a href="{% url 'PZWapp:povrtnabiljka_list' %}">Popis Povrtnog Bilja</a></li>
-    </ul>
+        <section class="plants-overview">
+            <h2>Pregledajte Biljke</h2>
+            <div class="plant-links">
+                <div class="plant-card">
+                    <a href="{% url 'PZWapp:vrtnabiljka_list' %}">
+                        <img src="{% static 'images/garden_plants_icon.jpg' %}" alt="Vrtno Bilje">
+                        <h3>Vrtno Bilje</h3>
+                    </a>
+                </div>
+                <div class="plant-card">
+                    <a href="{% url 'PZWapp:povrtnabiljka_list' %}">
+                        <img src="{% static 'images/vegetable_icon.jpg' %}" alt="Povrtno Bilje">
+                        <h3>Povrtno Bilje</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <!-- Logout forma -->
-    <form method="post" action="{% url 'PZWapp:logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+        <form class="logout-form" method="post" action="{% url 'PZWapp:logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
 </body>
 </html>
