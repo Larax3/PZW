@@ -6,7 +6,7 @@ from .views import (
     PovrtnaBiljkaListView, PovrtnaBiljkaDetailView,
     VrtnaBiljkaCreateView, VrtnaBiljkaUpdateView, VrtnaBiljkaDeleteView,
     PovrtnaBiljkaCreateView, PovrtnaBiljkaUpdateView, PovrtnaBiljkaDeleteView,
-    kreiraj_testne_podatke, register, admin_view, delete_user, homepage
+    register, admin_view, delete_user, homepage
 )
 from django.conf.urls.static import static
 from django.conf import settings
@@ -47,7 +47,7 @@ povrtna_biljka_urlpatterns = [
 # Ostali URL-ovi
 other_urlpatterns = [
     path('', views.homepage, name='homepage'),
-    path('kreiraj-testne-podatke/', kreiraj_testne_podatke, name='kreiraj_testne_podatke'),
+    #path('kreiraj-testne-podatke/', kreiraj_testne_podatke, name='kreiraj_testne_podatke'),
 ]
 
 # Kombiniranje svih URL-ova

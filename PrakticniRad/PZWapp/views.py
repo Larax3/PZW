@@ -73,9 +73,10 @@ class VrtnaBiljkaListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        biljke = VrtnaBiljka.objects.filter(user=self.request.user)  
         if query:
-            return VrtnaBiljka.objects.filter(ime_v__icontains=query)
-        return VrtnaBiljka.objects.all()
+            biljke = biljke.filter(ime_v__icontains=query)
+        return biljke
 
 class PovrtnaBiljkaListView(ListView):
     model = PovrtnaBiljka
@@ -84,9 +85,11 @@ class PovrtnaBiljkaListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
+        biljke = PovrtnaBiljka.objects.filter(user=self.request.user)  
         if query:
-            return PovrtnaBiljka.objects.filter(ime_p__icontains=query)
-        return PovrtnaBiljka.objects.all()
+            biljke = biljke.filter(ime_p__icontains=query)
+        return biljke
+
 
 class VrtnaBiljkaDetailView(DetailView):
     model = VrtnaBiljka
@@ -96,25 +99,16 @@ class PovrtnaBiljkaDetailView(DetailView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_detail.html'
 
-def kreiraj_testne_podatke(request):
-    # Kreiranje testnih podataka
-    VrtnaBiljka.objects.bulk_create([
-        VrtnaBiljka(ime_v='Ruža', regijaBiljke_v='Mediteran', vrijemeSazrijevanja_v='Proljeće'),
-        VrtnaBiljka(ime_v='Lala', regijaBiljke_v='Balkan', vrijemeSazrijevanja_v='Proljeće'),
-    ])
-
-    PovrtnaBiljka.objects.bulk_create([
-        PovrtnaBiljka(ime_p='Mrkva', regijaBiljke_p='Kontinentalna', vrijemeSazrijevanja_p='Ljeto'),
-        PovrtnaBiljka(ime_p='Krumpir', regijaBiljke_p='Planinska', vrijemeSazrijevanja_p='Ljeto'),
-    ])
-
-    return HttpResponse("Testni podaci su uspješno kreirani!")
 
 class VrtnaBiljkaCreateView(CreateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
     fields = ['ime_v', 'slikaBiljke_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user  
+        return super().form_valid(form)
 
 class VrtnaBiljkaUpdateView(UpdateView):
     model = VrtnaBiljka
@@ -132,6 +126,11 @@ class PovrtnaBiljkaCreateView(CreateView):
     template_name = 'main/povrtna_biljka_form.html'
     fields = ['ime_p', 'slikaBiljke_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user 
+        return super().form_valid(form)
+
 
 class PovrtnaBiljkaUpdateView(UpdateView):
     model = PovrtnaBiljka

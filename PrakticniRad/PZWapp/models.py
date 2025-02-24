@@ -10,8 +10,7 @@ class VrtnaBiljka(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
-        related_name='vrtne_biljke',
-        default=get_default_user
+        related_name='vrtne_biljke'
     )
     ime_v = models.CharField(max_length=30)
     slikaBiljke_v = models.ImageField(upload_to='images/', blank=True, null=True)
@@ -25,8 +24,7 @@ class PovrtnaBiljka(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
-        related_name='povrtne_biljke',
-        default=get_default_user
+        related_name='povrtne_biljke'
     )
     ime_p = models.CharField(max_length=30)
     slikaBiljke_p = models.ImageField(upload_to='images/', blank=True, null=True)
@@ -35,6 +33,7 @@ class PovrtnaBiljka(models.Model):
 
     def __str__(self):
         return self.ime_p
+
 
 class Korisnik(AbstractUser):
     ime = models.CharField(max_length=50)
