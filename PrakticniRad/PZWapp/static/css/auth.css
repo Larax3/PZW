@@ -1,0 +1,102 @@
+/* auth.css */
+
+/* Osnovni stilovi za cijelu stranicu */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("/static/images/botanical_background.jpg");
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: #2e4d28;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stilizacija kontejnera login forme */
+.login-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 2em;
+    max-width: 400px;
+    margin: 100px auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Naslovi u login formi */
+.login-container h1 {
+    text-align: center;
+    color: #2e4d28;
+}
+
+/* Stilizacija pojedinačnih form grupa */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Stil za gumb za prijavu */
+button[type="submit"] {
+    background-color: #4CAF50;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Stilizacija linkova */
+a {
+    color: #2e4d28;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Stilizacija kontejnera register forme */
+.register-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 2em;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Naslov forme */
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Stil grešaka validacije */
+.error-message {
+    background-color: #ffdddd;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border: 1px solid #d8000c;
+}
