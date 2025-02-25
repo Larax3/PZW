@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
-from .forms import UserRegistrationForm,VrtnaBiljkaForm
+from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm
 from django.shortcuts import render, redirect
 
 def register(request):
@@ -123,14 +123,15 @@ class VrtnaBiljkaDeleteView(DeleteView):
     template_name = 'main/vrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
+
 class PovrtnaBiljkaCreateView(CreateView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_form.html'
-    fields = ['ime_p', 'slikaBiljke_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+    form_class = PovrtnaBiljkaForm  
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user 
+        form.instance.user = self.request.user  
         return super().form_valid(form)
 
 

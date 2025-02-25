@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Korisnik,VrtnaBiljka
+from .models import Korisnik,VrtnaBiljka,PovrtnaBiljka
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Lozinka', widget=forms.PasswordInput)
@@ -26,10 +26,20 @@ class UserRegistrationForm(forms.ModelForm):
 class VrtnaBiljkaForm(forms.ModelForm):
     class Meta:
         model = VrtnaBiljka
-        fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']  # Polja iz modela
+        fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v'] 
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Dohvati korisnika ako je proslijeđen
+        user = kwargs.pop('user', None) 
         super().__init__(*args, **kwargs)
         if user:
-            self.instance.user = user  # Automatski postavi user polje
+            self.instance.user = user  
+class PovrtnaBiljkaForm(forms.ModelForm):
+    class Meta:
+        model = PovrtnaBiljka
+        fields = ['ime_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.instance.user = user
