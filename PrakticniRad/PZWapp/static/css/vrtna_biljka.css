@@ -128,3 +128,70 @@ h1 {
     color: #777;
     font-style: italic;
 }
+
+/*Vrtne biljke dodavanje*/
+
+body.vrtne_biljke_dodavanje {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: rgba(0, 255, 13, 0.3);
+    background-image: none;
+}
+
+body.vrtne_biljke_dodavanje .form-container {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.vrtne_biljke_dodavanje h1 {
+    text-align: center;
+    color: #333;
+}
+
+body.vrtne_biljke_dodavanje form {
+    display: flex;
+    flex-direction: column;
+}
+
+body.vrtne_biljke_dodavanje label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+body.vrtne_biljke_dodavanje input, 
+body.vrtne_biljke_dodavanje select, 
+body.vrtne_biljke_dodavanje textarea {
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+body.vrtne_biljke_dodavanje button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+body.vrtne_biljke_dodavanje button:hover {
+    background-color: #45a049;
+}
+
+body.vrtne_biljke_dodavanje .back-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+body.vrtne_biljke_dodavanje .back-link a {
+    text-decoration: none;
+    color: #007BFF;
+}
