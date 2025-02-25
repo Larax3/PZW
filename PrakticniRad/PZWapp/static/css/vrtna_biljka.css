@@ -1,16 +1,18 @@
 /* vrtna_biljka.css */
 
 /* Stilovi za listu vrtnih biljaka */
-body.vrtna_biljka {
+body.lista_vrtnih_biljaka {
     font-family: Arial, sans-serif;
-    background-color: rgba(0, 163, 49, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(40, 167, 69, 0.3);
+    height: 100vh;
     margin: 0;
-    padding: 20px;
 }
 
 .container {
     max-width: 800px;
-    margin: auto;
     background: rgb(255, 255, 255);
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -129,13 +131,27 @@ h1 {
     font-style: italic;
 }
 
+.home-btn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px 12px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+}
 /*Vrtne biljke dodavanje*/
 
 body.vrtne_biljke_dodavanje {
     font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: rgba(0, 255, 13, 0.3);
-    background-image: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(40, 167, 69, 0.3);
+    height: 100vh;
+    margin: 0;
 }
 
 body.vrtne_biljke_dodavanje .form-container {
