@@ -22,10 +22,6 @@
             <th>Vrijeme Sazrijevanja</th>
             <td>{{ object.vrijemeSazrijevanja_p }}</td>
         </tr>
-        <tr>
-            <th>Slika</th>
-            <td><img src="{{ object.slikaBiljke_p.url }}" alt="{{ object.ime_p }}"></td>
-        </tr>
     </table>
     <a href="{% url 'PZWapp:povrtnabiljka_list' %}">Povratak na popis</a>
 </body>

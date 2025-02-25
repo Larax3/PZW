@@ -7,9 +7,8 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm,VrtnaBiljkaForm
 from django.shortcuts import render, redirect
-from .models import Korisnik
 
 def register(request):
     if request.method == 'POST':
@@ -102,15 +101,16 @@ class PovrtnaBiljkaDetailView(DetailView):
     template_name = 'main/povrtna_biljka_detail.html'
 
 
+
 class VrtnaBiljkaCreateView(CreateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
-    fields = ['ime_v', 'slikaBiljke_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
-    success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
+    fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']  
 
     def form_valid(self, form):
         form.instance.user = self.request.user  
         return super().form_valid(form)
+
 
 class VrtnaBiljkaUpdateView(UpdateView):
     model = VrtnaBiljka
