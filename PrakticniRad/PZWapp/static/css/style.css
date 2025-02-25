@@ -173,3 +173,328 @@ body.homepage {
 .logout-form button:hover {
     background-color: #003809;
 }
+/* Detail za povrtne
+
+/* Resetiranje osnovnih stilova */
+body.lista_povrtnih_biljaka {
+    font-family: Arial, sans-serif;
+    background-image: none;
+    background-color: rgba(0, 163, 49, 0.7);
+    margin: 0;
+    padding: 20px;
+}
+
+
+/* Omotavanje sadržaja */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Naslov */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Stilizacija pretrage */
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.search-input {
+    padding: 8px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-btn {
+    padding: 8px 12px;
+    margin-left: 5px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.search-btn:hover {
+    background-color: #218838;
+}
+
+/* Dugme za dodavanje */
+.add-btn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.add-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Tablica */
+.plant-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.plant-table th, .plant-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.plant-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.plant-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Linkovi */
+.plant-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.plant-link:hover {
+    text-decoration: underline;
+}
+
+/* Akcije */
+.action-links a {
+    margin: 0 5px;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.edit-link {
+    color: #17a2b8;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+}
+
+.delete-link {
+    color: #dc3545;
+}
+
+.delete-link:hover {
+    text-decoration: underline;
+}
+
+/* Nema rezultata */
+.no-results {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+
+/* Dugme za povratak na početnu */
+.home-btn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px 12px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.home-btn:hover {
+    background-color: #5a6268;
+}
+.reset-btn {
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.reset-btn:hover {
+    background-color: #c82333;
+}
+/* vrtne biljke
+/* Resetiranje osnovnih stilova */
+body.lista_vrtnih_biljaka {
+    font-family: Arial, sans-serif;
+    background-image: none;
+    background-color: rgba(0, 163, 49, 0.7);
+    margin: 0;
+    padding: 20px;
+}
+
+/* Omotavanje sadržaja */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Naslov */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Stilizacija pretrage */
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-input {
+    padding: 8px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-btn {
+    padding: 8px 12px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.search-btn:hover {
+    background-color: #218838;
+}
+
+/* Dugme za reset pretrage */
+.reset-btn {
+    padding: 8px 12px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reset-btn:hover {
+    background-color: #c82333;
+}
+
+/* Dugmad za navigaciju */
+.add-btn, .home-btn {
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.add-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-btn:hover {
+    background-color: #0056b3;
+}
+
+.home-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.home-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Tablica */
+.plant-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.plant-table th, .plant-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.plant-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.plant-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Linkovi */
+.plant-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.plant-link:hover {
+    text-decoration: underline;
+}
+
+/* Akcije */
+.action-links a {
+    margin: 0 5px;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.edit-link {
+    color: #17a2b8;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+}
+
+.delete-link {
+    color: #dc3545;
+}
+
+.delete-link:hover {
+    text-decoration: underline;
+}
+
+/* Nema rezultata */
+.no-results {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+

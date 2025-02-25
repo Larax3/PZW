@@ -1,87 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="hr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popis Vrtnih Biljaka</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .add-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        .add-btn:hover {
-            background-color: #45a049;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <form method="get">
-        <input type="text" name="q" placeholder="Pretraži po imenu...">
-        <button type="submit">Pretraži</button>
-    </form>
-    <h1>Popis Biljaka</h1>
-    <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="add-btn">Dodaj novu biljku</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Ime</th>
-                <th>Regija</th>
-                <th>Vrijeme Sazrijevanja</th>
-                <th>Akcije</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for biljka in biljke %}
-            <tr>
-                <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}">{{ biljka.ime_v }}</a></td>
-                <td>{{ biljka.regijaBiljke_v }}</td>
-                <td>{{ biljka.vrijemeSazrijevanja_v }}</td>
-                <td>
-                    <a href="{% url 'PZWapp:vrtnabiljka_update' biljka.id %}">Uredi</a> |
-                    <a href="{% url 'PZWapp:vrtnabiljka_delete' biljka.id %}">Obriši</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">Nema rezultata za prikaz.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<body class="lista_vrtnih_biljaka">
+    <div class="container">
+        <h1>Popis Vrtnih Biljaka</h1>
+
+        <form method="get" class="search-form">
+            <input type="text" name="q" placeholder="Pretraži po imenu..." class="search-input" value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">Pretraži</button>
+
+            {% if request.GET.q %}
+            <a href="{% url 'PZWapp:vrtnabiljka_list' %}" class="btn reset-btn">Prikaži sve</a>
+            {% endif %}
+        </form>
+
+        <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="btn add-btn">Dodaj novu biljku</a>
+        <a href="{% url 'PZWapp:homepage' %}" class="btn home-btn">Vrati se na početnu</a>
+
+        <table class="plant-table">
+            <thead>
+                <tr>
+                    <th>Ime</th>
+                    <th>Regija</th>
+                    <th>Vrijeme Sazrijevanja</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for biljka in biljke %}
+                <tr>
+                    <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_v }}</a></td>
+                    <td>{{ biljka.regijaBiljke_v }}</td>
+                    <td>{{ biljka.vrijemeSazrijevanja_v }}</td>
+                    <td class="action-links">
+                        <a href="{% url 'PZWapp:vrtnabiljka_update' biljka.id %}" class="edit-link">Uredi</a> |
+                        <a href="{% url 'PZWapp:vrtnabiljka_delete' biljka.id %}" class="delete-link">Obriši</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="no-results">Nema rezultata za prikaz.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
