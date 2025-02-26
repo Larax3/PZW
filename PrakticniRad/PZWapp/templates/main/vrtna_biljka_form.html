@@ -1,30 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>{{ view.title|default:"Forma za Vrtne Biljke" }}</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/vrtna_biljka.css' %}">
-</head>
-<body class="vrtne_biljke_dodavanje">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/vrtna_biljka.css' %}"
+    />
+  </head>
+  <body class="vrtne_biljke_dodavanje">
     <div class="form-container">
-        <h1>{{ view.title|default:"Forma za Vrtne Biljke" }}</h1>
-        <form method="post">
-            {% csrf_token %}
+      <h1>{{ view.title|default:"Forma za Vrtne Biljke" }}</h1>
+      <form method="post">
+        {% csrf_token %}
 
-            <label for="id_ime_v">Naziv vrtne biljke:</label>
-            {{ form.ime_v }}
+        <label for="id_ime_v">Naziv vrtne biljke:</label>
+        <input
+          type="text"
+          name="ime_v"
+          id="id_ime_v"
+          placeholder="Lavanda"
+          value="{{ form.ime_v.value|default_if_none:'' }}"
+        />
 
-            <label for="id_regijaBiljke_v">Regija vrtne biljke:</label>
-            {{ form.regijaBiljke_v }}
+        <label for="id_regijaBiljke_v">Regija vrtne biljke:</label>
+        <input
+          type="text"
+          name="regijaBiljke_v"
+          id="id_regijaBiljke_v"
+          placeholder="Hrvatska,Mediteran"
+          value="{{ form.regijaBiljke_v.value|default_if_none:'' }}"
+        />
 
-            <label for="id_vrijemeSazrijevanja_v">Vrijeme sazrijevanja vrtne biljke:</label>
-            {{ form.vrijemeSazrijevanja_v }}
+        <label for="id_vrijemeSazrijevanja_v"
+          >Vrijeme sazrijevanja vrtne biljke:</label
+        >
+        <input
+          type="text"
+          name="vrijemeSazrijevanja_v"
+          id="id_vrijemeSazrijevanja_v"
+          placeholder="ožujak-svibanj, 70-80 dana"
+          value="{{ form.vrijemeSazrijevanja_v.value|default_if_none:'' }}"
+        />
 
-            <button type="submit">Spremi</button>
-        </form>
-        <div class="back-link">
-            <a href="{% url 'PZWapp:vrtnabiljka_list' %}">Povratak na popis</a>
-        </div>
+        <button type="submit">Spremi</button>
+      </form>
+      <div class="back-link">
+        <a href="{% url 'PZWapp:vrtnabiljka_list' %}">Povratak na popis</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

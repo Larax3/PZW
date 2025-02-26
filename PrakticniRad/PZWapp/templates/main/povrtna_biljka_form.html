@@ -11,14 +11,34 @@
         <form method="post">
             {% csrf_token %}
 
-            <label for="id_ime_p">Naziv povrtne biljke:</label>
-            {{ form.ime_p }}
-
-            <label for="id_regijaBiljke_p">Regija povtrne biljke:</label>
-            {{ form.regijaBiljke_p }}
-
-            <label for="id_vrijemeSazrijevanja_p">Vrijeme sazrijevanja povrtne biljke:</label>
-            {{ form.vrijemeSazrijevanja_p }}
+            <label for="id_ime_p">Naziv vrtne biljke:</label>
+            <input
+              type="text"
+              name="ime_p"
+              id="id_ime_p"
+              placeholder="Rajčica"
+              value="{{ form.ime_p.value|default_if_none:'' }}"
+            />
+    
+            <label for="id_regijaBiljke_p">Regija vrtne biljke:</label>
+            <input
+              type="text"
+              name="regijaBiljke_p"
+              id="id_regijaBiljke_p"
+              placeholder="Hrvatska, Zagorje"
+              value="{{ form.regijaBiljke_v.value|default_if_none:'' }}"
+            />
+    
+            <label for="id_vrijemeSazrijevanja_p"
+              >Vrijeme sazrijevanja vrtne biljke:</label
+            >
+            <input
+              type="text"
+              name="vrijemeSazrijevanja_p"
+              id="id_vrijemeSazrijevanja_p"
+              placeholder="srpanj-listopad, 70-80 dana"
+              value="{{ form.vrijemeSazrijevanja_p.value|default_if_none:'' }}"
+            />
 
             <button type="submit">Spremi</button>
         </form>

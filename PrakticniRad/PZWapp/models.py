@@ -13,8 +13,8 @@ class VrtnaBiljka(models.Model):
         related_name='vrtne_biljke'
     )
     ime_v = models.CharField(max_length=30)
-    regijaBiljke_v = models.CharField(max_length=20)
-    vrijemeSazrijevanja_v = models.CharField(max_length=15)
+    regijaBiljke_v = models.CharField(max_length=100)
+    vrijemeSazrijevanja_v = models.CharField(max_length=50)
 
     def __str__(self):
         return self.ime_v
@@ -26,8 +26,8 @@ class PovrtnaBiljka(models.Model):
         related_name='povrtne_biljke'
     )
     ime_p = models.CharField(max_length=30)
-    regijaBiljke_p = models.CharField(max_length=20)
-    vrijemeSazrijevanja_p = models.CharField(max_length=15)
+    regijaBiljke_p = models.CharField(max_length=100)
+    vrijemeSazrijevanja_p = models.CharField(max_length=50)
 
     def __str__(self):
         return self.ime_p

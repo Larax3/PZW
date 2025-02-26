@@ -26,13 +26,14 @@ class UserRegistrationForm(forms.ModelForm):
 class VrtnaBiljkaForm(forms.ModelForm):
     class Meta:
         model = VrtnaBiljka
-        fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v'] 
+        fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None) 
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
             self.instance.user = user  
+
 class PovrtnaBiljkaForm(forms.ModelForm):
     class Meta:
         model = PovrtnaBiljka
