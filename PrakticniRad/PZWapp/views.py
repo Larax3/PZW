@@ -79,26 +79,31 @@ class VrtnaBiljkaListView(ListView):
             biljke = biljke.filter(ime_v__icontains=query)
         return biljke
 
-class PovrtnaBiljkaListView(ListView):
-    model = PovrtnaBiljka
-    template_name = 'main/povrtna_biljka_list.html'
-    context_object_name = 'biljke'
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        biljke = PovrtnaBiljka.objects.filter(user=self.request.user)  
-        if query:
-            biljke = biljke.filter(ime_p__icontains=query)
-        return biljke
-
-
 class VrtnaBiljkaDetailView(DetailView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_detail.html'
 
-class PovrtnaBiljkaDetailView(DetailView):
-    model = PovrtnaBiljka
-    template_name = 'main/povrtna_biljka_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_sazrijevanje_context(self.object.vrijemeSazrijevanja_v))
+        return context
+
+    def get_sazrijevanje_context(self, vrijeme_sazrijevanja):
+        months = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj",
+                  "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+
+        if vrijeme_sazrijevanja:
+            try:
+                start_month, end_month = vrijeme_sazrijevanja.split(" - ")
+                start_index = months.index(start_month)
+                end_index = months.index(end_month)
+                highlighted_months = [months[i] for i in range(start_index, end_index + 1)]
+            except ValueError:
+                highlighted_months = []
+        else:
+            highlighted_months = []
+
+        return {'months': months, 'highlighted_months': highlighted_months}
 
 
 
@@ -115,7 +120,8 @@ class VrtnaBiljkaCreateView(CreateView):
 class VrtnaBiljkaUpdateView(UpdateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
-    fields = ['ime_v', 'slikaBiljke_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
+    fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
+    template_name = 'main/vrtna_biljka_update.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
 class VrtnaBiljkaDeleteView(DeleteView):
@@ -123,6 +129,17 @@ class VrtnaBiljkaDeleteView(DeleteView):
     template_name = 'main/vrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
+class PovrtnaBiljkaListView(ListView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_list.html'
+    context_object_name = 'biljke'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        biljke = PovrtnaBiljka.objects.filter(user=self.request.user)  
+        if query:
+            biljke = biljke.filter(ime_p__icontains=query)
+        return biljke
 
 class PovrtnaBiljkaCreateView(CreateView):
     model = PovrtnaBiljka
@@ -138,10 +155,37 @@ class PovrtnaBiljkaCreateView(CreateView):
 class PovrtnaBiljkaUpdateView(UpdateView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_form.html'
-    fields = ['ime_p', 'slikaBiljke_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+    fields = ['ime_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
+    template_name = 'main/povrtna_biljka_update.html'
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
 
 class PovrtnaBiljkaDeleteView(DeleteView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
+
+class PovrtnaBiljkaDetailView(DetailView):
+    model = PovrtnaBiljka
+    template_name = 'main/povrtna_biljka_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_sazrijevanje_context(self.object.vrijemeSazrijevanja_p))
+        return context
+
+    def get_sazrijevanje_context(self, vrijeme_sazrijevanja):
+        months = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj",
+                  "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+
+        if vrijeme_sazrijevanja:
+            try:
+                start_month, end_month = vrijeme_sazrijevanja.split(" - ")
+                start_index = months.index(start_month)
+                end_index = months.index(end_month)
+                highlighted_months = [months[i] for i in range(start_index, end_index + 1)]
+            except ValueError:
+                highlighted_months = []
+        else:
+            highlighted_months = []
+
+        return {'months': months, 'highlighted_months': highlighted_months}

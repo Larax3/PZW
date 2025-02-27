@@ -2,23 +2,38 @@
 <html>
 <head>
     <title>Detalji Vrtnog Bilja</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/detalji.css' %}">
 </head>
 <body>
-    <h1>Detalji Vrtnog Bilja</h1>
-    <table border="1">
-        <tr>
-            <th>Ime</th>
-            <td>{{ object.ime_v }}</td>
-        </tr>
-        <tr>
-            <th>Regija</th>
-            <td>{{ object.regijaBiljke_v }}</td>
-        </tr>
-        <tr>
-            <th>Vrijeme Sazrijevanja</th>
-            <td>{{ object.vrijemeSazrijevanja_v }}</td>
-        </tr>
-    </table>
-    <a href="{% url 'PZWapp:vrtnabiljka_list' %}">Povratak na popis</a>
+    <div class="container">
+        <h1>Detalji Vrtnog Bilja</h1>
+
+        <table>
+            <tr>
+                <th>Ime</th>
+                <td>{{ object.ime_v }}</td>
+            </tr>
+            <tr>
+                <th>Regija</th>
+                <td>{{ object.regijaBiljke_v }}</td>
+            </tr>
+            <tr>
+                <th>Vrijeme Sazrijevanja</th>
+                <td>{{ object.vrijemeSazrijevanja_v }}</td>
+            </tr>
+        </table>
+
+        <h2>Kalendar sazrijevanja</h2>
+        <div class="calendar">
+            {% for month in months %}
+                <div class="month {% if month in highlighted_months %}highlight{% endif %}">
+                    {{ month }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'PZWapp:vrtnabiljka_list' %}" class="back-button">Povratak na popis</a>
+    </div>
 </body>
 </html>

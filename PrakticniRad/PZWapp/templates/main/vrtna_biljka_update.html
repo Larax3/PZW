@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uredi Vrtnu Biljku</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/uredivanje.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Uredi Vrtnu Biljku</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="{{ form.ime_v.id_for_label }}">Ime vrtne biljke:</label>
+            {{ form.ime_v }}
+        
+            <label for="{{ form.regijaBiljke_v.id_for_label }}">Regija vrtne biljke:</label>
+            {{ form.regijaBiljke_v }}
+        
+            <label for="{{ form.vrijemeSazrijevanja_v.id_for_label }}">Vrijeme sazrijevanja biljke:</label>
+            {{ form.vrijemeSazrijevanja_v }}
+        
+            <button type="submit">Spremi promjene</button>
+            <a href="{% url 'PZWapp:vrtnabiljka_list' %}" class="cancel-btn">Odustani</a>
+        </form>
+    </div>
+</body>
+</html>
