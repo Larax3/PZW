@@ -1,4 +1,3 @@
-/* Stilovi za listu povrtnih biljaka */
 body.lista_povrtnih_biljaka {
     font-family: Arial, sans-serif;
     display: flex;
@@ -23,7 +22,6 @@ h1 {
     color: #333;
 }
 
-/* Stilizacija pretrage */
 .search-form {
     display: flex;
     justify-content: center;
@@ -51,7 +49,6 @@ h1 {
     background-color: #218838;
 }
 
-/* Dugme za dodavanje */
 .add-btn {
     display: block;
     width: fit-content;
@@ -68,7 +65,6 @@ h1 {
     background-color: #0056b3;
 }
 
-/* Tablica */
 .plant-table {
     width: 100%;
     border-collapse: collapse;
@@ -90,7 +86,6 @@ h1 {
     background-color: #f2f2f2;
 }
 
-/* Linkovi */
 .plant-link {
     color: #007bff;
     text-decoration: none;
@@ -100,7 +95,7 @@ h1 {
     text-decoration: underline;
 }
 
-/* Akcije */
+
 .action-links a {
     margin: 0 5px;
     text-decoration: none;
@@ -123,7 +118,6 @@ h1 {
     text-decoration: underline;
 }
 
-/* Nema rezultata */
 .no-results {
     text-align: center;
     color: #777;
