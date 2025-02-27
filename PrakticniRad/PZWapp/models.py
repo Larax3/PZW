@@ -10,7 +10,8 @@ class VrtnaBiljka(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
-        related_name='vrtne_biljke'
+        related_name='vrtne_biljke',
+        default = get_default_user
     )
     ime_v = models.CharField(max_length=30)
     regijaBiljke_v = models.CharField(max_length=100)
@@ -23,7 +24,8 @@ class PovrtnaBiljka(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
-        related_name='povrtne_biljke'
+        related_name='povrtne_biljke',
+        default = get_default_user
     )
     ime_p = models.CharField(max_length=30)
     regijaBiljke_p = models.CharField(max_length=100)

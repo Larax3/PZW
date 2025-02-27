@@ -9,6 +9,7 @@ from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik, Farma, FarmaBiljka
 from django.urls import reverse_lazy
 from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm,FarmaForm, FarmaBiljkaForm
 from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import check_password
 
 def register(request):
     if request.method == 'POST':
@@ -247,5 +248,3 @@ def dodaj_biljku_na_farmu(request):
         "vrtne_biljke": VrtnaBiljka.objects.all(),
         "farme": farme
     })
-
-

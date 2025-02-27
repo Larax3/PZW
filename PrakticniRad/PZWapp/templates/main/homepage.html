@@ -8,8 +8,13 @@
 </head>
 <body class="homepage">
     <div class="container">
-        <h1 class="welcome">Dobrodošli, {{ korisnik.username }}!</h1>
-        <p class="subtext">Uspješno ste prijavljeni.</p>
+        {% if user.is_authenticated %}
+            <h1 class="welcome">Dobrodošli, {{ user.username }}!</h1>
+            <p class="subtext">Uspješno ste prijavljeni.</p>
+        {% else %}
+            <h1 class="welcome">Dobrodošli!</h1>
+            <p class="subtext">Molimo prijavite se kako biste nastavili.</p>
+        {% endif %}
 
         <section class="plants-overview">
             <h2>Pregledajte Biljke</h2>
@@ -29,21 +34,22 @@
             </div>
         </section>
 
-        <form class="logout-form" method="post" action="{% url 'PZWapp:logout' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        {% if user.is_authenticated %}
+            <form class="logout-form" method="post" action="{% url 'PZWapp:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% endif %}
     </div>
+
     <script>
         window.addEventListener("beforeunload", function (event) {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            fetch("{% url 'logout' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: "csrfmiddlewaretoken=" + csrfToken,
-            });
+            // Provjerite ima li korisnik CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (csrfToken) {
+                // Pošaljite POST zahtjev za logout u pozadini pomoću sendBeacon
+                navigator.sendBeacon("{% url 'PZWapp:logout' %}", "csrfmiddlewaretoken=" + csrfToken.value);
+            }
         });
     </script>
 </body>
