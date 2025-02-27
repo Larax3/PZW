@@ -41,16 +41,22 @@
             </form>
         {% endif %}
     </div>
-
+    
     <script>
         window.addEventListener("beforeunload", function (event) {
-            // Provjerite ima li korisnik CSRF token
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-            if (csrfToken) {
-                // Pošaljite POST zahtjev za logout u pozadini pomoću sendBeacon
-                navigator.sendBeacon("{% url 'PZWapp:logout' %}", "csrfmiddlewaretoken=" + csrfToken.value);
-            }
+            // Pretrži CSRF token iz DOM-a
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+            // Pošaljite POST zahtjev za logout uz CSRF token
+            fetch("{% url 'logout' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "csrfmiddlewaretoken=" + csrfToken,
+            });
         });
-    </script>
+    </script>    
+    
 </body>
 </html>

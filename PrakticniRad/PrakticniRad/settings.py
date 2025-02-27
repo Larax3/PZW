@@ -103,6 +103,10 @@ USE_TZ = True
 
 CSRF_COOKIE_SECURE = False
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',  # ili vaša domena
+]
+
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
