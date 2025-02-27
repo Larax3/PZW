@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
+from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik, Farma, FarmaBiljka
 from django.urls import reverse_lazy
-from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm
+from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm,FarmaForm, FarmaBiljkaForm
 from django.shortcuts import render, redirect
 
 def register(request):
@@ -29,7 +29,6 @@ def custom_logout(request):
     return redirect('login')
 
 def admin_view(request):
-    # Dohvati sve korisnike
     korisnici = Korisnik.objects.all()
     context = {
         'korisnici': korisnici
@@ -189,3 +188,64 @@ class PovrtnaBiljkaDetailView(DetailView):
             highlighted_months = []
 
         return {'months': months, 'highlighted_months': highlighted_months}
+
+def lista_farmi(request):
+    farme = Farma.objects.all()
+    return render(request, 'farme/lista.html', {'farme': farme})
+
+def dodaj_farmu(request):
+    if request.method == "POST":
+        form = FarmaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_farmi')
+    else:
+        form = FarmaForm()
+    return render(request, 'farme/dodaj.html', {'form': form})
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import VrtnaBiljka, Farma, FarmaBiljka
+
+@login_required
+def dodaj_biljku_na_farmu(request):
+    user = request.user
+    farme = user.farme.all() 
+
+    if request.method == "POST":
+        biljka_id = request.POST.get("biljka")
+        farma_id = request.POST.get("farma")
+        kolicina = request.POST.get("kolicina")
+
+      
+        if not (biljka_id and farma_id and kolicina):
+            return render(request, "vrtna_biljka_form.html", {
+                "vrtne_biljke": VrtnaBiljka.objects.all(),
+                "farme": farme,
+                "error": "Molimo popunite sva polja."
+            })
+
+        try:
+            biljka = VrtnaBiljka.objects.get(id=biljka_id)
+            farma = get_object_or_404(Farma, id=farma_id, user=user) 
+
+            FarmaBiljka.objects.create(
+                farma=farma,
+                biljka_vrtna=biljka,
+                kolicina=int(kolicina)
+            )
+            return redirect("PZWapp:vrtnabiljka_list")
+
+        except VrtnaBiljka.DoesNotExist:
+            return render(request, "vrtna_biljka_form.html", {
+                "vrtne_biljke": VrtnaBiljka.objects.all(),
+                "farme": farme,
+                "error": "Odabrana biljka ne postoji."
+            })
+
+    return render(request, "vrtna_biljka_form.html", {
+        "vrtne_biljke": VrtnaBiljka.objects.all(),
+        "farme": farme
+    })
+
+

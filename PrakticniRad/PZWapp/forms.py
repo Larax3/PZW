@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Korisnik,VrtnaBiljka,PovrtnaBiljka
+from .models import Korisnik,VrtnaBiljka,PovrtnaBiljka,Farma,FarmaBiljka
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Lozinka', widget=forms.PasswordInput)
@@ -44,3 +44,18 @@ class PovrtnaBiljkaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.instance.user = user
+class FarmaForm(forms.ModelForm):
+    class Meta:
+        model = Farma
+        fields = ['naziv', 'lokacija']
+
+class FarmaBiljkaForm(forms.ModelForm):
+    class Meta:
+        model = FarmaBiljka
+        fields = ['farma', 'biljka_vrtna', 'biljka_povrtna', 'kolicina']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['farma'].queryset = Farma.objects.filter(user=user)  

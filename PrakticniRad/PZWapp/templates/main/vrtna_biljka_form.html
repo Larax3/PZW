@@ -1,54 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{ view.title|default:"Forma za Vrtne Biljke" }}</title>
+<head>
+    <title>{{ view.title|default:"Dodavanje Biljke na Farmu" }}</title>
     {% load static %}
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/vrtna_biljka.css' %}"
-    />
-  </head>
-  <body class="vrtne_biljke_dodavanje">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vrtna_biljka.css' %}" />
+</head>
+<body class="vrtne_biljke_dodavanje">
     <div class="form-container">
-      <h1>{{ view.title|default:"Forma za Vrtne Biljke" }}</h1>
-      <form method="post">
-        {% csrf_token %}
+        <h1>{{ view.title|default:"Dodavanje Biljke na Farmu" }}</h1>
+        <form method="post">
+            {% csrf_token %}
 
-        <label for="id_ime_v">Naziv vrtne biljke:</label>
-        <input
-          type="text"
-          name="ime_v"
-          id="id_ime_v"
-          placeholder="Lavanda"
-          value="{{ form.ime_v.value|default_if_none:'' }}"
-        />
+            <!-- Dropdown meni za odabir vrtne biljke -->
+            <label for="id_biljka">Odaberi biljku:</label>
+            <select name="biljka" id="id_biljka">
+                {% for biljka in vrtne_biljke %}
+                    <option value="{{ biljka.id }}">{{ biljka.ime_v }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="id_regijaBiljke_v">Regija vrtne biljke:</label>
-        <input
-          type="text"
-          name="regijaBiljke_v"
-          id="id_regijaBiljke_v"
-          placeholder="Hrvatska,Mediteran"
-          value="{{ form.regijaBiljke_v.value|default_if_none:'' }}"
-        />
+            <!-- Unos lokacije farme -->
+            <label for="id_lokacija">Lokacija farme:</label>
+            <input type="text" name="lokacija" id="id_lokacija" placeholder="Upiši lokaciju" required>
 
-        <label for="id_vrijemeSazrijevanja_v"
-          >Vrijeme sazrijevanja vrtne biljke:</label
-        >
-        <input
-          type="text"
-          name="vrijemeSazrijevanja_v"
-          id="id_vrijemeSazrijevanja_v"
-          placeholder="ožujak-svibanj, 70-80 dana"
-          value="{{ form.vrijemeSazrijevanja_v.value|default_if_none:'' }}"
-        />
+            <!-- Unos broja posađenih biljaka -->
+            <label for="id_kolicina">Broj posađenih biljaka:</label>
+            <input type="number" name="kolicina" id="id_kolicina" placeholder="Upiši broj biljaka" required>
 
-        <button type="submit">Spremi</button>
-      </form>
-      <div class="back-link">
-        <a href="{% url 'PZWapp:vrtnabiljka_list' %}">Povratak na popis</a>
-      </div>
+            <button type="submit">Spremi</button>
+        </form>
+        <div class="back-link">
+            <a href="{% url 'PZWapp:vrtnabiljka_list' %}">Povratak na popis</a>
+        </div>
     </div>
-  </body>
+</body>
 </html>

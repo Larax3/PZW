@@ -41,4 +41,25 @@ class Korisnik(AbstractUser):
 
     def __str__(self):
         return f"{self.ime} {self.prezime}"
+class Farma(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='farme'
+    )
+    naziv = models.CharField(max_length=100)
+    lokacija = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.naziv
+
+class FarmaBiljka(models.Model):
+    farma = models.ForeignKey(Farma, on_delete=models.CASCADE, related_name='biljke_na_farmi')
+    biljka_vrtna = models.ForeignKey(VrtnaBiljka, null=True, blank=True, on_delete=models.CASCADE)
+    biljka_povrtna = models.ForeignKey(PovrtnaBiljka, null=True, blank=True, on_delete=models.CASCADE)
+    kolicina = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        biljka = self.biljka_vrtna if self.biljka_vrtna else self.biljka_povrtna
+        return f"{biljka.ime_v if biljka else 'Nepoznata biljka'} - {self.farma.naziv} ({self.kolicina})"
 
