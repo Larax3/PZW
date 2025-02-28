@@ -1,5 +1,11 @@
-body.lista_vrtnih_biljaka {
+body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+body.lista_vrtnih_biljaka, body.vrtne_biljke_dodavanje {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,58 +16,88 @@ body.lista_vrtnih_biljaka {
 
 .container {
     max-width: 800px;
-    background: rgb(255, 255, 255);
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    text-align: center;
 }
 
 h1 {
     text-align: center;
     color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .search-form {
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .search-input {
     padding: 8px;
     width: 60%;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
 .search-btn {
-    padding: 8px 12px;
-    margin-left: 5px;
+    padding: 8px 15px;
     border: none;
     background-color: #28a745;
     color: white;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
 .search-btn:hover {
     background-color: #218838;
 }
 
-.add-btn {
-    display: block;
-    width: fit-content;
-    margin: 10px auto;
+.reset-btn {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: #6c757d;
     color: white;
+    border: none;
+    border-radius: 5px;
     text-decoration: none;
-    border-radius: 4px;
-    text-align: center;
+    font-size: 14px;
+}
+
+.reset-btn:hover {
+    background-color: #545b62;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: #007bff;
 }
 
 .add-btn:hover {
-    background-color: #0056b3;
+    background: #0056b3;
+}
+
+.home-btn {
+    background: #28a745;
+}
+
+.home-btn:hover {
+    background: #218838;
 }
 
 .plant-table {
@@ -88,16 +124,19 @@ h1 {
 .plant-link {
     color: #007bff;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .plant-link:hover {
     text-decoration: underline;
 }
 
+/* Action Links */
 .action-links a {
     margin: 0 5px;
     text-decoration: none;
     padding: 5px;
+    font-size: 14px;
 }
 
 .edit-link {
@@ -116,67 +155,41 @@ h1 {
     text-decoration: underline;
 }
 
+/* No Results Message */
 .no-results {
     text-align: center;
     color: #777;
     font-style: italic;
 }
 
-.home-btn {
-    display: block;
-    width: fit-content;
-    margin: 10px auto;
-    padding: 8px 12px;
-    background-color: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    text-align: center;
-}
-
-
-body.vrtne_biljke_dodavanje {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(40, 167, 69, 0.3);
-    height: 100vh;
-    margin: 0;
-}
-
+/* Form Styling */
 body.vrtne_biljke_dodavanje .form-container {
     background: #fff;
     border-radius: 8px;
-    padding: 20px;
+    padding: 25px;
     max-width: 500px;
-    margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-body.vrtne_biljke_dodavanje h1 {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #333;
 }
 
 body.vrtne_biljke_dodavanje form {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 body.vrtne_biljke_dodavanje label {
-    margin-bottom: 5px;
     font-weight: bold;
 }
 
 body.vrtne_biljke_dodavanje input, 
 body.vrtne_biljke_dodavanje select, 
 body.vrtne_biljke_dodavanje textarea {
-    margin-bottom: 15px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    width: 100%;
 }
 
 body.vrtne_biljke_dodavanje button {
@@ -184,7 +197,7 @@ body.vrtne_biljke_dodavanje button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -193,6 +206,7 @@ body.vrtne_biljke_dodavanje button:hover {
     background-color: #45a049;
 }
 
+/* Back Link */
 body.vrtne_biljke_dodavanje .back-link {
     text-align: center;
     margin-top: 15px;
@@ -200,6 +214,9 @@ body.vrtne_biljke_dodavanje .back-link {
 
 body.vrtne_biljke_dodavanje .back-link a {
     text-decoration: none;
-    color: #007BFF;
+    color: #007BFF;
 }
 
+body.vrtne_biljke_dodavanje .back-link a:hover {
+    text-decoration: underline;
+}

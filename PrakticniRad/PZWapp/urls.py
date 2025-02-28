@@ -44,12 +44,6 @@ povrtna_biljka_urlpatterns = [
     path('povrtnabiljke/<int:pk>/obrisi/', PovrtnaBiljkaDeleteView.as_view(), name='povrtnabiljka_delete'),
 ]
 
-farme=[
-    path('farme/', views.lista_farmi, name='lista_farmi'),
-    path('farme/dodaj/', views.dodaj_farmu, name='dodaj_farmu'),
-    path('farme/dodaj_biljku/', views.dodaj_biljku_na_farmu, name='dodaj_biljku_na_farmu'),
-]
-
 # Ostali URL-ovi
 other_urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -61,8 +55,7 @@ urlpatterns = (
     admin_urlpatterns +
     vrtna_biljka_urlpatterns +
     povrtna_biljka_urlpatterns +
-    other_urlpatterns+
-    farme
+    other_urlpatterns
 )
 
 # Dodavanje URL-ova za statičke datoteke u debug modu

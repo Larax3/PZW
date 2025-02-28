@@ -27,25 +27,21 @@
             <thead>
                 <tr>
                     <th>Ime</th>
-                    <th>Regija</th>
-                    <th>Vrijeme Sazrijevanja</th>
                     <th>Akcije</th>
                 </tr>
             </thead>
             <tbody>
                 {% for biljka in biljke %}
                 <tr>
-                    <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_v }}</a></td>
-                    <td>{{ biljka.regijaBiljke_v }}</td>
-                    <td>{{ biljka.vrijemeSazrijevanja_v }}</td>
+                    <td><a href="{% url 'PZWapp:povrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_v }}</a></td>
                     <td class="action-links">
-                        <a href="{% url 'PZWapp:vrtnabiljka_update' biljka.id %}" class="edit-link">Uredi</a> |
-                        <a href="{% url 'PZWapp:vrtnabiljka_delete' biljka.id %}" class="delete-link">Obriši</a>
+                        <a href="{% url 'PZWapp:povrtnabiljka_update' biljka.id %}" class="edit-link">Uredi</a> |
+                        <a href="{% url 'PZWapp:povrtnabiljka_delete' biljka.id %}" class="delete-link">Obriši</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="no-results">Nema rezultata za prikaz.</td>
+                    <td colspan="2" class="no-results">Nema rezultata za prikaz.</td>
                 </tr>
                 {% endfor %}
             </tbody>

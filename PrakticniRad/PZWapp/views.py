@@ -71,13 +71,8 @@ class VrtnaBiljkaListView(ListView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_list.html'
     context_object_name = 'biljke'
-
     def get_queryset(self):
-        query = self.request.GET.get('q')
-        biljke = VrtnaBiljka.objects.filter(user=self.request.user)  
-        if query:
-            biljke = biljke.filter(ime_v__icontains=query)
-        return biljke
+        return VrtnaBiljka.objects.filter(farmabiljka__farma__user=self.request.user).distinct()
 
 class VrtnaBiljkaDetailView(DetailView):
     model = VrtnaBiljka
@@ -110,11 +105,17 @@ class VrtnaBiljkaDetailView(DetailView):
 class VrtnaBiljkaCreateView(CreateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
-    fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']  
+    fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vrtne_biljke'] = VrtnaBiljka.objects.all()  
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user  
         return super().form_valid(form)
+
 
 
 class VrtnaBiljkaUpdateView(UpdateView):
@@ -133,13 +134,8 @@ class PovrtnaBiljkaListView(ListView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_list.html'
     context_object_name = 'biljke'
-
     def get_queryset(self):
-        query = self.request.GET.get('q')
-        biljke = PovrtnaBiljka.objects.filter(user=self.request.user)  
-        if query:
-            biljke = biljke.filter(ime_p__icontains=query)
-        return biljke
+        return PovrtnaBiljka.objects.filter(farmabiljka__farma__user=self.request.user).distinct()
 
 class PovrtnaBiljkaCreateView(CreateView):
     model = PovrtnaBiljka
@@ -147,9 +143,15 @@ class PovrtnaBiljkaCreateView(CreateView):
     form_class = PovrtnaBiljkaForm  
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['povrtne_biljke'] = PovrtnaBiljka.objects.all() 
+        return context
+
     def form_valid(self, form):
         form.instance.user = self.request.user  
         return super().form_valid(form)
+
 
 
 class PovrtnaBiljkaUpdateView(UpdateView):
@@ -203,48 +205,3 @@ def dodaj_farmu(request):
     else:
         form = FarmaForm()
     return render(request, 'farme/dodaj.html', {'form': form})
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import VrtnaBiljka, Farma, FarmaBiljka
-
-@login_required
-def dodaj_biljku_na_farmu(request):
-    user = request.user
-    farme = user.farme.all() 
-
-    if request.method == "POST":
-        biljka_id = request.POST.get("biljka")
-        farma_id = request.POST.get("farma")
-        kolicina = request.POST.get("kolicina")
-
-      
-        if not (biljka_id and farma_id and kolicina):
-            return render(request, "vrtna_biljka_form.html", {
-                "vrtne_biljke": VrtnaBiljka.objects.all(),
-                "farme": farme,
-                "error": "Molimo popunite sva polja."
-            })
-
-        try:
-            biljka = VrtnaBiljka.objects.get(id=biljka_id)
-            farma = get_object_or_404(Farma, id=farma_id, user=user) 
-
-            FarmaBiljka.objects.create(
-                farma=farma,
-                biljka_vrtna=biljka,
-                kolicina=int(kolicina)
-            )
-            return redirect("PZWapp:vrtnabiljka_list")
-
-        except VrtnaBiljka.DoesNotExist:
-            return render(request, "vrtna_biljka_form.html", {
-                "vrtne_biljke": VrtnaBiljka.objects.all(),
-                "farme": farme,
-                "error": "Odabrana biljka ne postoji."
-            })
-
-    return render(request, "vrtna_biljka_form.html", {
-        "vrtne_biljke": VrtnaBiljka.objects.all(),
-        "farme": farme
-    })

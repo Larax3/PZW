@@ -1,18 +1,10 @@
 from django.core.management.base import BaseCommand
-from PZWapp.models import VrtnaBiljka, PovrtnaBiljka, Korisnik
+from PZWapp.models import VrtnaBiljka, PovrtnaBiljka
 
 class Command(BaseCommand):
     help = "Dodaje testne vrtne i povrtne biljke u bazu podataka"
 
     def handle(self, *args, **kwargs):
-        # Provjera postoji li korisnik, ako ne, dodaj jednog
-        user, created = Korisnik.objects.get_or_create(username="test_korisnik", email="test@example.com", password="test_password")
-
-        if not created:
-            self.stdout.write(self.style.SUCCESS(f"Korisnik '{user.username}' već postoji. Dodavat ćemo biljke tom korisniku."))
-        else:
-            self.stdout.write(self.style.SUCCESS(f"Kreiran novi korisnik '{user.username}'."))
-
         vrtne_biljke = [
             {"ime_v": "Lavanda", "regijaBiljke_v": "Mediteran", "vrijemeSazrijevanja_v": "Ožujak - Svibanj"},
             {"ime_v": "Ružmarin", "regijaBiljke_v": "Mediteran", "vrijemeSazrijevanja_v": "Travanj - Lipanj"},
@@ -39,17 +31,15 @@ class Command(BaseCommand):
             {"ime_p": "Kelj", "regijaBiljke_p": "Hladnije klime", "vrijemeSazrijevanja_p": "Kolovoz - Prosinac"}
         ]
 
-        # Dodaj vrtne biljke
         for biljka in vrtne_biljke:
-            biljka_obj, created = VrtnaBiljka.objects.get_or_create(user=user, **biljka)
+            biljka_obj, created = VrtnaBiljka.objects.get_or_create(**biljka)
             if created:
                 self.stdout.write(self.style.SUCCESS(f"Vrtna biljka '{biljka['ime_v']}' dodana."))
             else:
                 self.stdout.write(self.style.WARNING(f"Vrtna biljka '{biljka['ime_v']}' već postoji."))
 
-        # Dodaj povrtne biljke
         for biljka in povrtne_biljke:
-            biljka_obj, created = PovrtnaBiljka.objects.get_or_create(user=user, **biljka)
+            biljka_obj, created = PovrtnaBiljka.objects.get_or_create(**biljka)
             if created:
                 self.stdout.write(self.style.SUCCESS(f"Povrtna biljka '{biljka['ime_p']}' dodana."))
             else:
