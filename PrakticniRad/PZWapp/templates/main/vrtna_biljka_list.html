@@ -47,5 +47,31 @@
             </tbody>
         </table>
     </div>
+    <script>
+        let isNavigatingAway = false;
+    
+        // Dodaj event listener za linkove koji vode na drugu stranicu
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function () {
+                isNavigatingAway = true;  // Postavimo flag na true kada korisnik klikne na link
+            });
+        });
+    
+        window.addEventListener("beforeunload", function (event) {
+            if (!isNavigatingAway) {
+                // Provjerite ima li korisnik CSRF token
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                
+                if (csrfToken) {
+                    // Kreiraj FormData objekt za slanje CSRF tokena
+                    const formData = new FormData();
+                    formData.append('csrfmiddlewaretoken', csrfToken.value);
+                    
+                    // Pošaljite POST zahtjev za logout u pozadini pomoću sendBeacon
+                    navigator.sendBeacon("{% url 'PZWapp:logout' %}", formData);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
