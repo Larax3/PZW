@@ -3,34 +3,30 @@
 <head>
     <title>{{ view.title|default:"Dodavanje Povrtne Biljke" }}</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/povrtna_biljka.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/povrtna_biljka.css' %}" />
 </head>
 <body class="povrtne_biljke_dodavanje">
     <div class="form-container">
-        <h1>{{ view.title|default:"Dodavanje Povrtne Biljke" }}</h1>
+        <h1>Dodavanje Povrtne Biljke</h1>
         <form method="post">
             {% csrf_token %}
-
-            <!-- Dropdown meni za odabir povrtne biljke -->
-            <label for="id_biljka">Odaberi biljku:</label>
-            <select name="biljka" id="id_biljka">
-                {% for biljka in povrtne_biljke %}
-                    <option value="{{ biljka.id }}">{{ biljka.ime_p }}</option>
-                {% endfor %}
-            </select>
-
-            <!-- Unos lokacije farme -->
-            <label for="id_lokacija">Lokacija farme:</label>
-            <input type="text" name="lokacija" id="id_lokacija" placeholder="Upiši lokaciju" required>
-
-            <!-- Unos broja posađenih biljaka -->
-            <label for="id_kolicina">Broj posađenih biljaka:</label>
-            <input type="number" name="kolicina" id="id_kolicina" placeholder="Upiši broj biljaka" required>
+            
+            <!-- Unos imena biljke -->
+            <label for="id_ime_p">Ime biljke:</label>
+            <input type="text" name="ime_p" id="id_ime_p" placeholder="Upiši ime biljke" required>
+        
+            <!-- Unos regije biljke -->
+            <label for="id_regijaBiljke_p">Regija biljke:</label>
+            <input type="text" name="regijaBiljke_p" id="id_regijaBiljke_p" placeholder="Upiši regiju biljke" required>
+        
+            <!-- Unos vremena sazrijevanja -->
+            <label for="id_vrijemeSazrijevanja_p">Vrijeme sazrijevanja:</label>
+            <input type="text" name="vrijemeSazrijevanja_p" id="id_vrijemeSazrijevanja_p" placeholder="Upiši vrijeme sazrijevanja" required>
 
             <button type="submit">Spremi</button>
         </form>
         <div class="back-link">
-          <a href="{% url 'PZWapp:povrtnabiljka_list' %}">Povratak na popis</a>
+            <a href="{% url 'PZWapp:povrtnabiljka_list' %}">Povratak na popis</a>
         </div>
     </div>
     <script>
@@ -39,24 +35,35 @@
         // Dodaj event listener za linkove koji vode na drugu stranicu
         document.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function () {
-                isNavigatingAway = true;  // Postavimo flag na true kada korisnik klikne na link
+                isNavigatingAway = true;
             });
         });
     
         window.addEventListener("beforeunload", function (event) {
             if (!isNavigatingAway) {
-                // Provjerite ima li korisnik CSRF token
                 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
                 
                 if (csrfToken) {
-                    // Kreiraj FormData objekt za slanje CSRF tokena
                     const formData = new FormData();
                     formData.append('csrfmiddlewaretoken', csrfToken.value);
                     
-                    // Pošaljite POST zahtjev za logout u pozadini pomoću sendBeacon
                     navigator.sendBeacon("{% url 'PZWapp:logout' %}", formData);
                 }
             }
+        });
+
+        document.querySelector("form").addEventListener("submit", function(event) {
+            let form = event.target;
+            let formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = "{% url 'PZWapp:povrtnabiljka_list' %}";  
+                }
+            }).catch(error => console.error("Greška:", error));
         });
     </script>
 </body>

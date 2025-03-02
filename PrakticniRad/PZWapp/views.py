@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik, Farma, FarmaBiljka
+from .models import VrtnaBiljka, PovrtnaBiljka, Korisnik
 from django.urls import reverse_lazy
-from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm,FarmaForm, FarmaBiljkaForm
+from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password
 
@@ -31,48 +31,40 @@ def custom_logout(request):
 
 def admin_view(request):
     korisnici = Korisnik.objects.all()
-    context = {
-        'korisnici': korisnici
-    }
-    return render(request, 'main/admin_views.html', context)
+    return render(request, 'main/admin_views.html', {'korisnik': request.user, 'korisnici': korisnici})
 
 def delete_user(request, user_id):
     korisnik = get_object_or_404(Korisnik, id=user_id)
     korisnik.delete()
     return redirect('PZWapp:admin_view')
 
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def homepage(request):
     return render(request, 'main/homepage.html', {'korisnik': request.user})
 
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        try:
-            korisnik = Korisnik.objects.get(username=username)
-            if check_password(password, korisnik.lozinka):  
+        korisnik = authenticate(request, username=username, password=password)
         
-                return redirect('PZWapp:homepage')
-            else:
-                
-                return render(request, 'registration/login.html', {'error': 'Neispravno korisničko ime ili lozinka'})
-        except Korisnik.DoesNotExist:
-           
+        if korisnik is not None:
+            login(request, korisnik)
+            return redirect('PZWapp:homepage')
+        else:
             return render(request, 'registration/login.html', {'error': 'Neispravno korisničko ime ili lozinka'})
-    else:
-        return render(request, 'registration/login.html')
 
-class VrtnaBiljkaListView(ListView):
+    return render(request, 'registration/login.html')
+
+
+class VrtnaBiljkaListView( ListView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_list.html'
     context_object_name = 'biljke'
     def get_queryset(self):
-        return VrtnaBiljka.objects.filter(farmabiljka__farma__user=self.request.user).distinct()
+        return VrtnaBiljka.objects.filter(user=self.request.user).exclude(user__isnull=True)
+
 
 class VrtnaBiljkaDetailView(DetailView):
     model = VrtnaBiljka
@@ -85,37 +77,42 @@ class VrtnaBiljkaDetailView(DetailView):
 
     def get_sazrijevanje_context(self, vrijeme_sazrijevanja):
         months = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj",
-                  "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+                "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+
+        highlighted_months = []
 
         if vrijeme_sazrijevanja:
             try:
-                start_month, end_month = vrijeme_sazrijevanja.split(" - ")
+            # Očisti nepotrebne razmake i podijeli po " - "
+                start_month, end_month = [m.strip() for m in vrijeme_sazrijevanja.split("-")]
+
+                # Dohvati indekse mjeseci
                 start_index = months.index(start_month)
                 end_index = months.index(end_month)
+
+                # Istakni mjesece u rasponu
                 highlighted_months = [months[i] for i in range(start_index, end_index + 1)]
             except ValueError:
-                highlighted_months = []
-        else:
-            highlighted_months = []
+                print("Greška kod prepoznavanja mjeseci:", vrijeme_sazrijevanja)
 
         return {'months': months, 'highlighted_months': highlighted_months}
-
 
 
 class VrtnaBiljkaCreateView(CreateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
-    fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['vrtne_biljke'] = VrtnaBiljka.objects.all()  
-        return context
+    form_class = VrtnaBiljkaForm
+    success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user  
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        """Prosljeđuje korisnika u formu kako bi se filtrirale biljke"""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class VrtnaBiljkaUpdateView(UpdateView):
@@ -130,28 +127,32 @@ class VrtnaBiljkaDeleteView(DeleteView):
     template_name = 'main/vrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
-class PovrtnaBiljkaListView(ListView):
+class PovrtnaBiljkaListView( ListView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_list.html'
-    context_object_name = 'biljke'
+    context_object_name = 'biljke' 
+
     def get_queryset(self):
-        return PovrtnaBiljka.objects.filter(farmabiljka__farma__user=self.request.user).distinct()
+        if self.request.user.is_authenticated:
+            return PovrtnaBiljka.objects.filter(user_id=self.request.user.id).exclude(user__isnull=True)
+        else:
+            return PovrtnaBiljka.objects.none()
 
 class PovrtnaBiljkaCreateView(CreateView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_form.html'
-    form_class = PovrtnaBiljkaForm  
+    form_class = PovrtnaBiljkaForm
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['povrtne_biljke'] = PovrtnaBiljka.objects.all() 
-        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user  
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        """Prosljeđuje korisnika u formu kako bi se filtrirale farme"""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class PovrtnaBiljkaUpdateView(UpdateView):
@@ -177,31 +178,22 @@ class PovrtnaBiljkaDetailView(DetailView):
 
     def get_sazrijevanje_context(self, vrijeme_sazrijevanja):
         months = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj",
-                  "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+                "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+
+        highlighted_months = []
 
         if vrijeme_sazrijevanja:
             try:
-                start_month, end_month = vrijeme_sazrijevanja.split(" - ")
+            # Očisti nepotrebne razmake i podijeli po " - "
+                start_month, end_month = [m.strip() for m in vrijeme_sazrijevanja.split("-")]
+
+                # Dohvati indekse mjeseci
                 start_index = months.index(start_month)
                 end_index = months.index(end_month)
+
+                # Istakni mjesece u rasponu
                 highlighted_months = [months[i] for i in range(start_index, end_index + 1)]
             except ValueError:
-                highlighted_months = []
-        else:
-            highlighted_months = []
+                print("Greška kod prepoznavanja mjeseci:", vrijeme_sazrijevanja)
 
         return {'months': months, 'highlighted_months': highlighted_months}
-
-def lista_farmi(request):
-    farme = Farma.objects.all()
-    return render(request, 'farme/lista.html', {'farme': farme})
-
-def dodaj_farmu(request):
-    if request.method == "POST":
-        form = FarmaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_farmi')
-    else:
-        form = FarmaForm()
-    return render(request, 'farme/dodaj.html', {'form': form})

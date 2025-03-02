@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Korisnik,VrtnaBiljka,PovrtnaBiljka,Farma,FarmaBiljka
+from .models import Korisnik, VrtnaBiljka, PovrtnaBiljka
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Lozinka', widget=forms.PasswordInput)
@@ -12,9 +12,9 @@ class UserRegistrationForm(forms.ModelForm):
 
     def clean_password2(self):
         cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
+        if cd.get('password') != cd.get('password2'):
             raise ValidationError('Lozinke se ne podudaraju.')
-        return cd['password2']
+        return cd.get('password2')
 
     def save(self, commit=True):
         korisnik = super().save(commit=False)
@@ -23,16 +23,33 @@ class UserRegistrationForm(forms.ModelForm):
             korisnik.save()
         return korisnik
 
+
 class VrtnaBiljkaForm(forms.ModelForm):
+    ime_v = forms.CharField(
+        max_length=100,
+        label="Ime biljke",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši ime biljke'})
+    )
+    regijaBiljke_v = forms.CharField(
+        max_length=100,
+        label="Regija biljke",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši regiju biljke'})
+    )
+    vrijemeSazrijevanja_v = forms.CharField(
+        max_length=50,
+        label="Vrijeme sazrijevanja",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši vrijeme sazrijevanja'})
+    )
+
     class Meta:
         model = VrtnaBiljka
         fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
-
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        user = kwargs.pop('user', None) 
         super().__init__(*args, **kwargs)
         if user:
-            self.instance.user = user  
+            self.instance.user = user 
+
 
 class PovrtnaBiljkaForm(forms.ModelForm):
     class Meta:
@@ -40,22 +57,7 @@ class PovrtnaBiljkaForm(forms.ModelForm):
         fields = ['ime_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        user = kwargs.pop('user', None) 
         super().__init__(*args, **kwargs)
         if user:
-            self.instance.user = user
-class FarmaForm(forms.ModelForm):
-    class Meta:
-        model = Farma
-        fields = ['naziv', 'lokacija']
-
-class FarmaBiljkaForm(forms.ModelForm):
-    class Meta:
-        model = FarmaBiljka
-        fields = ['farma', 'biljka_vrtna', 'biljka_povrtna', 'kolicina']
-
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  
-        super().__init__(*args, **kwargs)
-        if user:
-            self.fields['farma'].queryset = Farma.objects.filter(user=user)  
+            self.instance.user = user 
