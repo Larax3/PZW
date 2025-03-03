@@ -39,19 +39,6 @@
             });
         });
     
-        window.addEventListener("beforeunload", function (event) {
-            if (!isNavigatingAway) {
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-                
-                if (csrfToken) {
-                    const formData = new FormData();
-                    formData.append('csrfmiddlewaretoken', csrfToken.value);
-                    
-                    navigator.sendBeacon("{% url 'PZWapp:logout' %}", formData);
-                }
-            }
-        });
-
         document.querySelector("form").addEventListener("submit", function(event) {
             let form = event.target;
             let formData = new FormData(form);

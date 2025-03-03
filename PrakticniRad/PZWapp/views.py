@@ -149,7 +149,7 @@ class PovrtnaBiljkaCreateView(CreateView):
         return super().form_valid(form)
 
     def get_form_kwargs(self):
-        """Prosljeđuje korisnika u formu kako bi se filtrirale farme"""
+        """Prosljeđuje korisnika u formu kako bi se filtrirale biljke"""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
@@ -166,6 +166,10 @@ class PovrtnaBiljkaDeleteView(DeleteView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return VrtnaBiljka.objects.filter(user=self.request.user)
+        return VrtnaBiljka.objects.none()
 
 class PovrtnaBiljkaDetailView(DetailView):
     model = PovrtnaBiljka
