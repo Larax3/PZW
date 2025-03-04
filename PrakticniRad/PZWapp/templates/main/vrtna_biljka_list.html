@@ -7,10 +7,11 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/vrtna_biljka.css' %}">
 </head>
-<body class="lista_vrtnih_biljaka">
+<body class="lista_biljaka">
     <div class="container">
         <h1>Popis Vrtnih Biljaka</h1>
 
+        <!-- Pretraga -->
         <form method="get" class="search-form">
             <input type="text" name="q" placeholder="Pretraži po imenu..." class="search-input" value="{{ request.GET.q }}">
             <button type="submit" class="search-btn">Pretraži</button>
@@ -20,9 +21,13 @@
             {% endif %}
         </form>
 
-        <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="btn add-btn">Dodaj novu biljku</a>
-        <a href="{% url 'PZWapp:homepage' %}" class="btn home-btn">Vrati se na početnu</a>
+        <!-- Akcijski gumbi -->
+        <div class="button-group">
+            <a href="{% url 'PZWapp:vrtnabiljka_create' %}" class="btn add-btn">Dodaj novu biljku</a>
+            <a href="{% url 'PZWapp:homepage' %}" class="btn home-btn">Vrati se na početnu</a>
+        </div>
 
+        <!-- Tabela biljaka -->
         <table class="plant-table">
             <thead>
                 <tr>
@@ -31,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for biljka in page_obj %}  <!-- Koristimo page_obj umjesto biljke -->
+                {% for biljka in page_obj %}
                 <tr>
                     <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_v }}</a></td>
                     <td class="action-links">
@@ -50,21 +55,17 @@
         <!-- Paginacija -->
         {% if page_obj.has_other_pages %}
         <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prva</a>
-                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prethodna</a>
-                {% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Prva</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Prethodna</a>
+            {% endif %}
 
-                <span class="current">
-                    Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}.
-                </span>
+            <span class="current-page">Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}</span>
 
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Sljedeća</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Zadnja</a>
-                {% endif %}
-            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Sljedeća</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pagination-btn">Zadnja</a>
+            {% endif %}
         </div>
         {% endif %}
     </div>

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from django.contrib.auth import views as auth_views
 from PZWapp import views
 from .views import (
@@ -11,9 +11,14 @@ from .views import (
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from rest_framework.routers import DefaultRouter
+from .views import PovrtnaBiljkaViewSet, VrtnaBiljkaViewSet
 
 app_name = 'PZWapp'
 
+router = DefaultRouter()
+router.register(r'povrtne-biljke', PovrtnaBiljkaViewSet)
+router.register(r'vrtne-biljke', VrtnaBiljkaViewSet)
 # URL-ovi za autentikaciju
 auth_urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
@@ -48,6 +53,7 @@ povrtna_biljka_urlpatterns = [
 # Ostali URL-ovi
 other_urlpatterns = [
     path('', views.homepage, name='homepage'),
+    path('', include(router.urls)), 
 ]
 
 # Kombiniranje svih URL-ova

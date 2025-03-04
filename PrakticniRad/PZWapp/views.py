@@ -12,6 +12,8 @@ from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password
 from django.core.paginator import Paginator
+from rest_framework import viewsets
+from .serializers import PovrtnaBiljkaSerializer, VrtnaBiljkaSerializer
 
 def register(request):
     if request.method == 'POST':
@@ -206,3 +208,10 @@ class PovrtnaBiljkaDetailView(DetailView):
                 print("Greška kod prepoznavanja mjeseci:", vrijeme_sazrijevanja)
 
         return {'months': months, 'highlighted_months': highlighted_months}
+class PovrtnaBiljkaViewSet(viewsets.ModelViewSet):
+    queryset = PovrtnaBiljka.objects.all()
+    serializer_class = PovrtnaBiljkaSerializer
+
+class VrtnaBiljkaViewSet(viewsets.ModelViewSet):
+    queryset = VrtnaBiljka.objects.all()
+    serializer_class = VrtnaBiljkaSerializer
