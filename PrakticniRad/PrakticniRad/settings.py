@@ -110,8 +110,8 @@ CSRF_TRUSTED_ORIGINS = [
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'PZWapp:homepage'
+LOGOUT_REDIRECT_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_URL = '/login/'
 MEDIA_URL = '/media/'

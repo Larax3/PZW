@@ -26,6 +26,23 @@
             });
         });
     
+        window.addEventListener("beforeunload", function (event) {
+            if (!isNavigatingAway) {
+                if (event.clientY < 0) {
+                // Provjerite ima li korisnik CSRF token
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                
+                if (csrfToken) {
+                    // Kreiraj FormData objekt za slanje CSRF tokena
+                    const formData = new FormData();
+                    formData.append('csrfmiddlewaretoken', csrfToken.value);
+                    
+                    // Pošaljite POST zahtjev za logout u pozadini pomoću sendBeacon
+                    navigator.sendBeacon("{% url 'PZWapp:logout' %}", formData);
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

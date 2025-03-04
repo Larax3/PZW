@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
@@ -26,6 +27,7 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 def custom_logout(request):
+    print("Pozvan je logout!")
     logout(request)
     return redirect('login')
 
@@ -58,7 +60,7 @@ def login_view(request):
     return render(request, 'registration/login.html')
 
 
-class VrtnaBiljkaListView( ListView):
+class VrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_list.html'
     context_object_name = 'biljke'
@@ -98,7 +100,7 @@ class VrtnaBiljkaDetailView(DetailView):
         return {'months': months, 'highlighted_months': highlighted_months}
 
 
-class VrtnaBiljkaCreateView(CreateView):
+class VrtnaBiljkaCreateView(LoginRequiredMixin, CreateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
     form_class = VrtnaBiljkaForm
@@ -115,19 +117,19 @@ class VrtnaBiljkaCreateView(CreateView):
         return kwargs
 
 
-class VrtnaBiljkaUpdateView(UpdateView):
+class VrtnaBiljkaUpdateView(LoginRequiredMixin, UpdateView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_form.html'
     fields = ['ime_v', 'regijaBiljke_v', 'vrijemeSazrijevanja_v']
     template_name = 'main/vrtna_biljka_update.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
-class VrtnaBiljkaDeleteView(DeleteView):
+class VrtnaBiljkaDeleteView(LoginRequiredMixin, DeleteView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:vrtnabiljka_list')
 
-class PovrtnaBiljkaListView( ListView):
+class PovrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_list.html'
     context_object_name = 'biljke' 
@@ -138,7 +140,7 @@ class PovrtnaBiljkaListView( ListView):
         else:
             return PovrtnaBiljka.objects.none()
 
-class PovrtnaBiljkaCreateView(CreateView):
+class PovrtnaBiljkaCreateView(LoginRequiredMixin, CreateView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_form.html'
     form_class = PovrtnaBiljkaForm
@@ -155,21 +157,21 @@ class PovrtnaBiljkaCreateView(CreateView):
         return kwargs
 
 
-class PovrtnaBiljkaUpdateView(UpdateView):
+class PovrtnaBiljkaUpdateView(LoginRequiredMixin, UpdateView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_form.html'
     fields = ['ime_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']
     template_name = 'main/povrtna_biljka_update.html'
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
 
-class PovrtnaBiljkaDeleteView(DeleteView):
+class PovrtnaBiljkaDeleteView(LoginRequiredMixin, DeleteView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_confirm_delete.html'
     success_url = reverse_lazy('PZWapp:povrtnabiljka_list')
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return VrtnaBiljka.objects.filter(user=self.request.user)
-        return VrtnaBiljka.objects.none()
+            return PovrtnaBiljka.objects.filter(user=self.request.user)
+        return PovrtnaBiljka.objects.none()
 
 class PovrtnaBiljkaDetailView(DetailView):
     model = PovrtnaBiljka

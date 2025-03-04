@@ -47,8 +47,11 @@ class VrtnaBiljkaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None) 
         super().__init__(*args, **kwargs)
-        if user:
-            self.instance.user = user 
+        if user.is_authenticated:
+            self.instance.user = user
+        else:
+            raise ValueError("Korisnik mora biti prijavljen!")
+
 
 
 class PovrtnaBiljkaForm(forms.ModelForm):
@@ -59,5 +62,7 @@ class PovrtnaBiljkaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None) 
         super().__init__(*args, **kwargs)
-        if user:
-            self.instance.user = user 
+        if user.is_authenticated:
+            self.instance.user = user
+        else:
+            raise ValueError("Korisnik mora biti prijavljen!")
