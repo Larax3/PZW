@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from .forms import UserRegistrationForm,VrtnaBiljkaForm, PovrtnaBiljkaForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password
+from django.core.paginator import Paginator
 
 def register(request):
     if request.method == 'POST':
@@ -64,6 +65,7 @@ class VrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_list.html'
     context_object_name = 'biljke'
+    paginate_by="5"
     def get_queryset(self):
         return VrtnaBiljka.objects.filter(user=self.request.user).exclude(user__isnull=True)
 
@@ -133,6 +135,7 @@ class PovrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_list.html'
     context_object_name = 'biljke' 
+    paginate_by="5"
 
     def get_queryset(self):
         if self.request.user.is_authenticated:

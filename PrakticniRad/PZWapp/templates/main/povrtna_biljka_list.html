@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,14 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/povrtna_biljka.css' %}">
 </head>
+
 <body class="lista_povrtnih_biljaka">
     <div class="container">
         <h1>Popis Povrtnih Biljaka</h1>
 
         <form method="get" class="search-form">
-            <input type="text" name="q" placeholder="Pretraži po imenu..." class="search-input" value="{{ request.GET.q }}">
+            <input type="text" name="q" placeholder="Pretraži po imenu..." class="search-input"
+                value="{{ request.GET.q }}">
             <button type="submit" class="search-btn">Pretraži</button>
 
             {% if request.GET.q %}
@@ -31,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for biljka in biljke %}
+                {% for biljka in page_obj %}
                 <tr>
                     <td><a href="{% url 'PZWapp:povrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_p }}</a></td>
                     <td class="action-links">
@@ -46,6 +49,28 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Paginacija -->
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prva</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prethodna</a>
+                {% endif %}
+
+                <span class="current">
+                    Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Sljedeća</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Zadnja</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
 </body>
+
 </html>

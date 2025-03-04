@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for biljka in biljke %}
+                {% for biljka in page_obj %}  <!-- Koristimo page_obj umjesto biljke -->
                 <tr>
                     <td><a href="{% url 'PZWapp:vrtnabiljka_detail' biljka.id %}" class="plant-link">{{ biljka.ime_v }}</a></td>
                     <td class="action-links">
@@ -46,6 +46,27 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Paginacija -->
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prva</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Prethodna</a>
+                {% endif %}
+
+                <span class="current">
+                    Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Sljedeća</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Zadnja</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>
