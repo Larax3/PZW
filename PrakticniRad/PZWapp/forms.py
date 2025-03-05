@@ -55,6 +55,21 @@ class VrtnaBiljkaForm(forms.ModelForm):
 
 
 class PovrtnaBiljkaForm(forms.ModelForm):
+    ime_p = forms.CharField(
+        max_length=100,
+        label="Ime biljke",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši ime biljke'})
+    )
+    regijaBiljke_p = forms.CharField(
+        max_length=100,
+        label="Regija biljke",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši regiju biljke'})
+    )
+    vrijemeSazrijevanja_p = forms.CharField(
+        max_length=50,
+        label="Vrijeme sazrijevanja",
+        widget=forms.TextInput(attrs={'placeholder': 'Upiši vrijeme sazrijevanja'})
+    )
     class Meta:
         model = PovrtnaBiljka
         fields = ['ime_p', 'regijaBiljke_p', 'vrijemeSazrijevanja_p']

@@ -34,6 +34,18 @@ h1 {
     gap: 10px;
     margin-bottom: 15px;
 }
+.reset-btn {
+    padding: 8px 12px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.reset-btn:hover {
+    background-color: #545b62;
+}
 
 .search-input {
     padding: 8px;

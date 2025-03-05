@@ -67,9 +67,17 @@ class VrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = VrtnaBiljka
     template_name = 'main/vrtna_biljka_list.html'
     context_object_name = 'biljke'
-    paginate_by="5"
+    paginate_by = 5
+
     def get_queryset(self):
-        return VrtnaBiljka.objects.filter(user=self.request.user).exclude(user__isnull=True)
+        query = self.request.GET.get('q', '')
+        biljke = VrtnaBiljka.objects.filter(user=self.request.user).exclude(user__isnull=True)
+
+        if query:
+            biljke = biljke.filter(ime_v__icontains=query)  # Filtrira biljke prema imenu
+        
+        return biljke
+
 
 
 class VrtnaBiljkaDetailView(DetailView):
@@ -137,13 +145,16 @@ class PovrtnaBiljkaListView(LoginRequiredMixin, ListView):
     model = PovrtnaBiljka
     template_name = 'main/povrtna_biljka_list.html'
     context_object_name = 'biljke' 
-    paginate_by="5"
+    paginate_by = 5
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            return PovrtnaBiljka.objects.filter(user_id=self.request.user.id).exclude(user__isnull=True)
-        else:
-            return PovrtnaBiljka.objects.none()
+        query = self.request.GET.get('q', '')
+        biljke = PovrtnaBiljka.objects.filter(user_id=self.request.user.id).exclude(user__isnull=True)
+
+        if query:
+            biljke = biljke.filter(ime_p__icontains=query)  # Filtrira biljke prema upitu
+        
+        return biljke
 
 class PovrtnaBiljkaCreateView(LoginRequiredMixin, CreateView):
     model = PovrtnaBiljka
